@@ -1,0 +1,102 @@
+#Change version after edit templates
+
+Version: 2.1 
+
+Changlog:
+-- fix(new-variable) New variable ENV_FOLDER
+-- fix(jenkinsfile) Change stage deploy process
+-- fix(jenkinsfie&template) Add new template DEV & RC, Change Jenkinsfile for DEV & RC and Change ENV to ENV_FOLDER in Jenkinsfile
+-- fix(templates) Efficiency templates
+-- fix(sshagent) Add ssh agent in stages k8s-template/Jenkinsfile and k8s-template-beta-prod/Jenkinsfile
+-- fix(Jenkinsfile) Change """ to '''
+
+Tue Oct 17 04:40:53 PM WIB 2023
+#Change version after edit templates
+
+Version: 2.2
+
+Changelog:
+-- fix(new-variable) New variable ENV_FOLDER
+-- fix(jenkinsfile) Change stage deploy process
+-- fix(jenkinsfie&template) Add new template DEV & RC, Change Jenkinsfile for DEV & RC and Change ENV to ENV_FOLDER in Jenkinsfile
+-- fix(templates) Efficiency templates
+-- fix(sshagent) Add ssh agent in stages k8s-template/Jenkinsfile and k8s-template-beta-prod/Jenkinsfile
+-- fix(Jenkinsfile) Change """ to '''
+-- fix(commit) Add CLI Commit
+-- fix(bug) Checking folder log push
+
+Tue Oct 17 06:08:22 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.2
+
+Changelog:
+-- fix(new-variable) New variable ENV_FOLDER
+-- fix(jenkinsfile) Change stage deploy process
+-- fix(jenkinsfie&template) Add new template DEV & RC, Change Jenkinsfile for DEV & RC and Change ENV to ENV_FOLDER in Jenkinsfile
+-- fix(templates) Efficiency templates
+-- fix(sshagent) Add ssh agent in stages k8s-template/Jenkinsfile and k8s-template-beta-prod/Jenkinsfile
+-- fix(Jenkinsfile) Change """ to '''
+-- fix(commit) Add CLI Commit
+-- fix(bug) Checking folder log push
+-- add(test) test push
+
+Tue Oct 17 06:38:17 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.3
+
+Changelog:
+-- fix(new-variable) New variable ENV_FOLDER
+-- fix(jenkinsfile) Change stage deploy process
+-- fix(jenkinsfie&template) Add new template DEV & RC, Change Jenkinsfile for DEV & RC and Change ENV to ENV_FOLDER in Jenkinsfile
+-- fix(templates) Efficiency templates
+-- fix(sshagent) Add ssh agent in stages k8s-template/Jenkinsfile and k8s-template-beta-prod/Jenkinsfile
+-- fix(Jenkinsfile) Change """ to '''
+-- fix(commit) Add CLI Commit
+-- fix(bug) Checking folder log push
+-- add(test) test push
+-- fix(build-template) Fixing folder log-push not exist
+
+Tue Oct 17 08:36:40 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.4
+
+Changelog:
+-- fix(new-variable) New variable ENV_FOLDER
+-- fix(jenkinsfile) Change stage deploy process
+-- fix(jenkinsfie&template) Add new template DEV & RC, Change Jenkinsfile for DEV & RC and Change ENV to ENV_FOLDER in Jenkinsfile
+-- fix(templates) Efficiency templates
+-- fix(sshagent) Add ssh agent in stages k8s-template/Jenkinsfile and k8s-template-beta-prod/Jenkinsfile
+-- fix(Jenkinsfile) Change """ to '''
+-- fix(commit) Add CLI Commit
+-- fix(bug) Checking folder log push
+-- add(test) test push
+-- fix(build-template) Fixing folder log-push not exist
+-- fix(bug) fixing tag docker
+
+Wed Oct 18 11:40:19 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.5
+
+Changelog:
+-- fix(new-variable) New variable ENV_FOLDER
+-- fix(jenkinsfile) Change stage deploy process
+-- fix(jenkinsfie&template) Add new template DEV & RC, Change Jenkinsfile for DEV & RC and Change ENV to ENV_FOLDER in Jenkinsfile
+-- fix(templates) Efficiency templates
+-- fix(sshagent) Add ssh agent in stages k8s-template/Jenkinsfile and k8s-template-beta-prod/Jenkinsfile
+-- fix(Jenkinsfile) Change """ to '''
+-- fix(commit) Add CLI Commit
+-- fix(bug) Checking folder log push
+-- add(test) test push
+-- fix(build-template) Fixing folder log-push not exist
+-- fix(bug) fixing tag docker
+-- fix(bug) Create folder log-push in template build pushcommit
+
+Fri Oct 20 10:47:15 AM WIB 2023

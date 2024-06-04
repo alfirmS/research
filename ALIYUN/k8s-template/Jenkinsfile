@@ -1,0 +1,62 @@
+pipeline {
+  agent any
+    stages {
+      stage('Chekout repo'){
+                steps {
+                git branch: '[BRANCH_BITBUCKET]', credentialsId: 'devopsrctiplus-pwd', url: 'https://bitbucket.org/rctiplus/[SERVICE_NAME].git'
+           }
+      }
+
+      stage('Build Docker Image '){
+          steps{
+              sh '''
+                  docker build \
+                  --build-arg ENV=[ENV] \
+                  -f deployments/[ENV].Dockerfile \
+                  -t devopsrctiplus/[ENV]:[SERVICE_NAME]-0 .
+                 '''
+          }
+        }
+
+      stage('Push Docker Image'){
+          steps{
+            withCredentials([string(credentialsId: 'DockerHubPwdRctiplus', variable: 'DockerHubRctiplus')]) {
+              sh  '''
+                  docker login  \
+                  --username=devopsrctiplus \
+                  --password ${DockerHubRctiplus}
+                  docker push devopsrctiplus/[ENV]:[SERVICE_NAME]-0
+                  '''
+          }
+        }
+      }
+
+      stage(' Deploy to Kubernetes'){
+          steps{
+            sshagent(['jenkins-ssh']) {
+              sh '''
+                  ssh \
+                  -o StrictHostKeyChecking=no [JUMP_SERVER] \
+                  kubectl apply \
+                  -f /home/[USER_PROFILE]/rplusdevops/[ENV_FOLDER]/[SERVICE_NAME]/[SERVICE_NAME]-deployment.yaml
+                  '''
+          }
+        }
+      }
+
+      stage(' Remove image in Local server'){
+            steps{
+                sh 'docker system prune --force --all'
+            }
+          }
+        }
+
+    post {
+      success {
+       slackSend channel: '#jenkins-notif', color: 'good', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages [ENV]:[SERVICE_NAME]-0 \nCommit ID ${env.GIT_COMMIT} Kubernetes deploy success \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+       }
+      failure {
+        slackSend failOnError: true, color: 'danger', channel: '#jenkins-notif', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages [ENV]:[SERVICE_NAME]-0 \n Commit ID ${env.GIT_COMMIT} Kubernetes deploy failed \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", teamDomain: 'rctiplus', tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+    }
+  }
+}

@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stream-nginx
+  labels:
+    virtual-kubelet.io/burst-to-cci: 'off' #change to 'enforce' to swith to CCI
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stream-nginx
+  template:
+    metadata:
+      labels:
+        app: stream-nginx
+    spec:
+      containers:
+        - name: stream-nginx
+          image: index.docker.io/devopsrctiplus/prod:stream-nginx10
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "1024Mi"
+      imagePullSecrets:
+        - name: regcred
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: stream-nginx-service 
+spec:
+  selector:
+    app: stream-nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stream-nginx-ingress
+  annotations:
+    kubernetes.io/elb.id: "220d4ba3-a815-4b38-b1f2-9266688d3263"
+    kubernetes.io/elb.class: performance
+    kubernetes.io/elb.ip: "172.17.3.198"
+    kubernetes.io/elb.port: "443"
+    kubernetes.io/elb.tls-certificate-ids: 2e89bbfddea9437f86c36b41dee36132
+spec:
+  tls: 
+  - secretName: ingress-secret-ssl-rctiplusid 
+  rules: 
+  - host: 'pastevents.rctiplus.id'
+    http: 
+      paths: 
+      - path: '/'
+        backend: 
+          service:
+            name: stream-nginx-service
+            port: 
+              number: 80
+        property:
+          ingress.beta.kubernetes.io/url-match-mode: STARTS_WITH
+        pathType: ImplementationSpecific
+  - host: 'pastevents-ng.rctiplus.id'
+    http:
+      paths:
+      - path: '/'
+        backend:
+          service:
+            name: stream-nginx-service
+            port:
+              number: 80
+        property:
+          ingress.beta.kubernetes.io/url-match-mode: STARTS_WITH
+        pathType: ImplementationSpecific
+  - host: 'stream.rctiplus.id'
+    http:
+      paths:
+      - path: '/'
+        backend:
+          service:
+            name: stream-nginx-service
+            port:
+              number: 80
+        property:
+          ingress.beta.kubernetes.io/url-match-mode: STARTS_WITH
+        pathType: ImplementationSpecific
+  ingressClassName: cce 
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+  namespace : default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: stream-nginx
+  minReplicas: 1
+  maxReplicas: 100
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+

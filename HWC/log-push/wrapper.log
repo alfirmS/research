@@ -1,0 +1,277 @@
+
+#Change version after edit templates
+
+Version: 1
+
+Changelog:
+-- feat(add) New Version 1.0
+
+Mon Oct 23 09:17:11 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 1
+
+Changelog:
+-- feat(add) New Version 1.0
+
+Mon Oct 23 04:19:58 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.1
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+
+Tue Oct 24 10:56:17 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.3
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+
+Tue Oct 24 05:53:50 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.4
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+
+Mon Oct 30 10:43:29 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.5
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+
+Thu Nov  9 11:02:51 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.6
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+
+Wed Nov 15 04:12:51 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.7
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+
+Mon Nov 20 02:24:42 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.7
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+
+Tue Nov 28 11:05:00 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.8
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+
+Fri Dec  1 10:21:39 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 2.9
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+
+Fri Dec  1 10:31:31 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 3.0
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+-- fix(runner) delete directory before pull source
+
+Fri Dec  1 01:48:31 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 3.1
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+-- fix(runner) delete directory before pull source
+-- fix(Jenkinsfile) bug }
+
+Fri Dec  1 01:55:48 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 3.2
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+-- fix(runner) delete directory before pull source
+-- fix(Jenkinsfile) bug }
+-- fix(name_image) change name image in deployment.yaml
+
+Fri Dec  1 02:02:08 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 3.3
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+-- fix(runner) delete directory before pull source
+-- fix(Jenkinsfile) bug }
+-- fix(name_image) change name image in deployment.yaml
+-- fix(deployment) change name service in deployment.yaml
+
+Fri Dec  1 02:11:26 PM WIB 2023
+
+#Change version after edit templates
+
+Version: 3.4
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+-- fix(runner) delete directory before pull source
+-- fix(Jenkinsfile) bug }
+-- fix(name_image) change name image in deployment.yaml
+-- fix(deployment) change name service in deployment.yaml
+-- -- change(SSL) Remove SSL and Change Port in Template Backend
+
+Fri Dec 15 10:54:30 AM WIB 2023
+
+#Change version after edit templates
+
+Version: 3.4
+
+Changelog:
+-- feat(add) New Version 1.0
+-- fix(deployment) Change name image in deployment
+-- fix(add) Mounting env/secret
+-- fix(bug) Template DEV and RC
+-- change(name-image) Change format image DEV-RC
+-- fix(bug) Checking folder log push
+-- fix(bug) log push folder
+-- feat(add) Adding feature ESO and Reloader
+-- update template
+-- fix(template-build) change log folder pushcommit
+-- fix(runner) delete directory before pull source
+-- fix(Jenkinsfile) bug }
+-- fix(name_image) change name image in deployment.yaml
+-- fix(deployment) change name service in deployment.yaml
+-- -- change(SSL) Remove SSL and Change Port in Template Backend
+
+Fri Dec 15 12:41:37 PM WIB 2023

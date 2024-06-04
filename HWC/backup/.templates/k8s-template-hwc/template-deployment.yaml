@@ -1,0 +1,90 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: vault-[SERVICE_NAME]
+spec:
+  refreshInterval: "15s"
+  secretStoreRef:
+    name: secret-store-[ENV]
+    kind: SecretStore
+  target:
+    name: env-[SERVICE_NAME]
+  dataFrom:
+  - extract:
+      key: [SERVICE_NAME]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: [SERVICE_NAME]
+  labels:
+    virtual-kubelet.io/burst-to-cci: '[SERVERLESS]' #change to 'enforce' to swith to CCI
+  annotations:
+    secret.reloader.stakater.com/reload: env-[SERVICE_NAME]
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: [SERVICE_NAME]
+  template:
+    metadata:
+      labels:
+        app: [SERVICE_NAME]
+    spec:
+      containers:
+        - name: [SERVICE_NAME]
+          image: swr.ap-southeast-4.myhuaweicloud.com/rctiplus/[ENV]:[SERVICE_NAME]-0
+          ports:
+            - containerPort: [PORT]
+          envFrom:
+          - secretRef:
+              name: env-[SERVICE_NAME]
+          resources:
+            limits:
+              cpu: "[CPU_LIMIT]"
+              memory: "[MEM_LIMIT]"
+      imagePullSecrets:
+        - name: regcred
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: [ENV]-[SERVICE_NAME]-service 
+spec:
+  selector:
+    app: [SERVICE_NAME]
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: [PORT]
+  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: [SERVICE_NAME]-ingress
+  annotations:
+    kubernetes.io/elb.id: "[ELB_ID]"
+    kubernetes.io/elb.class: performance
+    kubernetes.io/elb.ip: "[ELB_IP]"
+    kubernetes.io/elb.port: "80"
+spec:
+  rules: 
+  - host: '[DNS_NAME]'
+    http: 
+      paths: 
+      - path: '/'
+        backend: 
+          service:
+            name: [ENV]-[SERVICE_NAME]-service
+            port: 
+              number: 80
+        property:
+          ingress.beta.kubernetes.io/url-match-mode: STARTS_WITH
+        pathType: ImplementationSpecific
+  ingressClassName: cce 

@@ -1,0 +1,29 @@
+- name: Configure Jenkins Job and View
+  hosts: localhost
+  vars_file:
+    - "./vars/vars.yaml"
+  tasks:
+  - name: Create a jenkins job using basic authentication
+    community.general.jenkins_job:
+      config: "{{ lookup('file', './folder-template.xml') }}"
+      name: "{{ folder }}"
+      token: "{{ token }}"
+      url: "{{ host }}"
+      user: sholeh
+  - name: Create a jenkins job using basic authentication
+    community.general.jenkins_job:
+      config: "{{ lookup('file', './development/"{{ envFolder }}/{{ nameService }}"-job-build.xml') }}"
+      name: "{{ folder }}/{{ nameService }}"
+      token: "{{ token }}"
+      url: "{{ host }}"
+      user: sholeh
+  - name: Create a jenkins job using basic authentication
+    community.general.jenkins_job:
+      config: "{{ lookup('file', './development/"{{ envFolder }}/{{ nameService }}"-job-k8s.xml') }}"
+      name: "{{ folder }}/{{ nameService }}"
+      token: "{{ token }}"
+      url: "{{ host }}"
+      user: sholeh
+  - name: Apply Jenkins Job Configuration
+    ansible.buildin.shell:
+      cmd: jenkins-view -c ./config.ini -v "{{ VIEW }}" -j "{{ nameService }}" 

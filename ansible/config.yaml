@@ -1,0 +1,4 @@
+jenkins:
+  url: https://deploy.mncplus.com/
+  username: sholeh
+  token: 11479597cfd4feba8ba8aed2badb58866b

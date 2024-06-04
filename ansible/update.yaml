@@ -1,0 +1,4 @@
+- view:
+    name: template
+    jobs:
+      - test-create-job

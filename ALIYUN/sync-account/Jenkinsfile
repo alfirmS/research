@@ -1,0 +1,62 @@
+pipeline {
+  agent any
+    stages {
+      stage('Chekout repo'){
+                steps {
+                git branch: 'master', credentialsId: 'devopsrctiplus-pwd', url: 'https://bitbucket.org/rctiplus/sync-account.git'
+           }
+      }
+
+      stage('Build Docker Image '){
+          steps{
+              sh '''
+                  docker build \
+                  --build-arg ENV=dev \
+                  -f deployments/dev.Dockerfile \
+                  -t devopsrctiplus/dev-sync-account:0 .
+                 '''
+          }
+        }
+
+      stage('Push Docker Image'){
+          steps{
+            withCredentials([string(credentialsId: 'DockerHubPwdRctiplus', variable: 'DockerHubRctiplus')]) {
+              sh  '''
+                  docker login  \
+                  --username=devopsrctiplus \
+                  --password ${DockerHubRctiplus}
+                  docker push devopsrctiplus/dev-sync-account:0
+                  '''
+          }
+        }
+      }
+
+      stage(' Deploy to Kubernetes'){
+          steps{
+            sshagent(['jenkins-ssh']) {
+              sh '''
+                  ssh \
+                  -o StrictHostKeyChecking=no dev-newrplus@149.129.219.106 \
+                  kubectl apply \
+                  -f /home/dev-newrplus/rplusdevops/development/sync-account/sync-account-deployment.yaml
+                  '''
+          }
+        }
+      }
+
+      stage(' Remove image in Local server'){
+            steps{
+                sh 'docker system prune --force --all'
+            }
+          }
+        }
+
+    post {
+      success {
+       slackSend channel: '#jenkins-notif', color: 'good', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages dev-sync-account:0 \nCommit ID ${env.GIT_COMMIT} Kubernetes deploy success \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+       }
+      failure {
+        slackSend failOnError: true, color: 'danger', channel: '#jenkins-notif', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages dev-sync-account:0 \n Commit ID ${env.GIT_COMMIT} Kubernetes deploy failed \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", teamDomain: 'rctiplus', tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+    }
+  }
+}

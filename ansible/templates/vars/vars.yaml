@@ -1,0 +1,10 @@
+#Set variable for automation template deployment
+
+folder: {{ USER_PROFILE }}
+env: {{ ENV_FOLDER }}
+envFolder: {{ ENVIRONMENT }}
+nameService: {{ NEW_SERVICE }}
+token: 11b339fe17bc13a080f0b136e1d085b8a0
+user: sholeh
+view: {{ VIEW }}
+host: "https://deploy.mncplus.com"

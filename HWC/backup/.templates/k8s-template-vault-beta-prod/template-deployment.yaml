@@ -1,0 +1,55 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: [SERVICE_NAME]
+  labels:
+    environment: [ENV]
+spec:
+  selector:
+    matchLabels:
+      app: [SERVICE_NAME]
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: [SERVICE_NAME]
+        environment: [ENV]
+    spec:
+      containers:
+        - name: [SERVICE_NAME]
+          image: index.docker.io/devopsrctiplus/[ENV]-[SERVICE_NAME]:0
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "[CPU_LIMIT]"
+              memory: "[MEM_LIMIT]"
+          ports:
+            - containerPort: [PORT]
+          volumeMounts:
+          - name: tz-jakarta
+            mountPath: /etc/localtime
+
+      volumes:
+        - name: tz-jakarta
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Jakarta
+      imagePullSecrets:
+        - name: regcred
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: [SERVICE_NAME]-service
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-protocol-port: "https:443"
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-cert-id: "5487852476068927_17d0dfad378_1321567672_1956863823"
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-id: "[SLB]"
+spec:
+  selector:
+    app: [SERVICE_NAME]
+  ports:
+  - protocol: TCP
+    port: 443
+    targetPort: [PORT]
+  type: LoadBalancer

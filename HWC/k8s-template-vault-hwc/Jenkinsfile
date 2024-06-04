@@ -1,0 +1,67 @@
+pipeline {
+
+  environment {
+    String IMAGE_NAME='swr.ap-southeast-4.myhuaweicloud.com/rctiplus/[ENV]:[SERVICE_NAME]-0'
+  }
+
+  agent any
+    stages {
+      stage('Chekout repo'){
+                steps {
+                git branch: '[BRANCH_BITBUCKET]', credentialsId: 'devopsrctiplus-pwd', url: 'https://bitbucket.org/rctiplus/[SERVICE_NAME].git'
+           }
+      }
+
+      stage('Build Docker Image '){
+          steps{
+            withCredentials([string(credentialsId: 'VAULT_TOKEN', variable: 'VAULT_TOKEN'), string(credentialsId: 'VAULT_ADDR', variable: 'VAULT_ADDR')]) {
+              sh '''
+                  docker build \
+                  --build-arg ENV=[ENV] \
+                  --build-arg VAULT_ADDR=$VAULT_ADDR \
+                  --build-arg VAULT_TOKEN=$VAULT_TOKEN \
+                  -f deployments/[ENV].Dockerfile \
+                  -t ${IMAGE_NAME} .
+                 '''
+          }
+        }
+      }
+
+      stage('Push Docker Image'){
+          steps{
+              sh  '''
+                  docker push ${IMAGE_NAME}
+                  '''
+        }
+      }
+
+      stage(' Deploy to Kubernetes'){
+          steps{
+            sshagent(['jenkins-ssh']) {
+              sh '''
+                  ssh \
+                  -p 2222 \
+                  -o StrictHostKeyChecking=no [JUMP_SERVER] \
+                  kubectl apply \
+                  -f /home/[USER_PROFILE]/rplusdevops/[ENV_FOLDER]/[SERVICE_NAME]/[SERVICE_NAME]-deployment.yaml
+                  '''
+          }
+        }
+      }
+
+      stage(' Remove image in Local server'){
+            steps{
+                sh 'docker system prune --force --all'
+            }
+          }
+        }
+
+    post {
+      success {
+       slackSend channel: '#jenkins-notif', color: 'good', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages [ENV]:[SERVICE_NAME]-0 \nCommit ID ${env.GIT_COMMIT} Kubernetes deploy success \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+       }
+      failure {
+        slackSend failOnError: true, color: 'danger', channel: '#jenkins-notif', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages [ENV]:[SERVICE_NAME]-0 \n Commit ID ${env.GIT_COMMIT} Kubernetes deploy failed \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", teamDomain: 'rctiplus', tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+    }
+  }
+}

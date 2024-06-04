@@ -1,0 +1,51 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: sync-account
+  labels:
+    environment: dev
+spec:
+  selector:
+    matchLabels:
+      app: sync-account
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: sync-account
+        environment: dev
+    spec:
+      containers:
+        - name: sync-account
+          image: index.docker.io/devopsrctiplus/dev-sync-account:0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8008
+          volumeMounts:
+          - name: tz-jakarta
+            mountPath: /etc/localtime
+      volumes:
+        - name: tz-jakarta
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Jakarta
+
+      imagePullSecrets:
+        - name: regcred
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sync-account-service
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-protocol-port: "https:443"
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-cert-id: "5487852476068927_17d0dfad378_1321567672_1956863823"
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-id: "test"
+spec:
+  selector:
+    app: sync-account
+  ports:
+  - protocol: TCP
+    port: 443
+    targetPort: 8008
+  type: LoadBalancer

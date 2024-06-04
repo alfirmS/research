@@ -1,0 +1,12 @@
+- name: Configure Jenkins Job and View
+  hosts: localhost
+  vars_file:
+    - "./vars/vars.yaml"
+  tasks:
+  - name: Create a jenkins job using basic authentication
+    community.general.jenkins_job:
+      config: "{{ lookup('file', './production/"{{ envFolder }}/{{ nameService }}"-job-build.xml') }}"
+      name: "{{ folder }}/{{ nameService }}"
+      token: "{{ token }}"
+      url: "{{ host }}"
+      user: sholeh

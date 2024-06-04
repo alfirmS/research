@@ -1,0 +1,80 @@
+pipeline {
+  agent  { label 'runner' }
+    stages {
+      stage('Checkout repo') {
+        steps {
+          script {
+              def inputBranch
+              def userInput = input (
+                  id: 'userInput', message: 'Tag to checkout:',
+                  parameters: [
+                      string(defaultValue: 'master', description: 'Branch or tag', name: 'Branch'),
+                  ]
+              )
+              inputBranch = userInput ?: ''
+              checkout([
+                  $class: 'GitSCM',
+                  branches: [[name: "${inputBranch}"]],
+                  userRemoteConfigs: [[
+                      credentialsId: 'devopsrctiplus-pwd',
+                      refspec: '+refs/tags/*:refs/remotes/origin/tags/*',
+                      url: 'https://devopsrctiplus@bitbucket.org/rctiplus/[SERVICE_NAME].git'
+                ]]
+              ])
+            }
+          }
+        }
+
+      stage('Build Docker Image '){
+          steps{
+              sh '''
+                  docker build \
+                  --build-arg ENV=[ENV] \
+                  -f deployments/[ENV].Dockerfile \
+                  -t devopsrctiplus/[ENV]-[SERVICE_NAME]:0 .
+                 '''
+        }
+      }
+
+      stage('Push Docker Image'){
+          steps{
+            withCredentials([string(credentialsId: 'DockerHubPwdRctiplus', variable: 'DockerHubRctiplus')]) {
+              sh  '''
+                  docker login  \
+                  --username=devopsrctiplus \
+                  -p ${DockerHubRctiplus}
+                  docker push devopsrctiplus/[ENV]-[SERVICE_NAME]:0
+                  '''
+          }
+        }
+      }
+
+      stage(' Deploy to Kubernetes'){
+          steps{
+            sshagent(['jenkins-ssh']) {
+              sh '''
+                  ssh \
+                  -o StrictHostKeyChecking=no [JUMP_SERVER] \
+                  kubectl apply \
+                  -f /home/[USER_PROFILE]/rplusdevops/[ENV_FOLDER]/[SERVICE_NAME]/[SERVICE_NAME]-deployment.yaml
+                  '''
+          }
+        }
+      }
+
+      stage(' Remove image in Local server'){
+            steps{
+                sh 'docker system prune --force --all'
+            }
+          }
+        }
+
+    post {
+      success {
+       slackSend channel: '#jenkins-notif', color: 'good', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages [ENV]-[SERVICE_NAME]:0 \nCommit ID ${env.GIT_COMMIT} Kubernetes deploy success \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+       }
+      failure {
+        slackSend failOnError: true, color: 'danger', channel: '#jenkins-notif', message: "${JOB_NAME}: #${BUILD_NUMBER} \nImages [ENV]-[SERVICE_NAME]:0 \n Commit ID ${env.GIT_COMMIT} Kubernetes deploy failed \n Logs ${JENKINS_URL}job/${JOB_NAME}/${BUILD_NUMBER}/console", teamDomain: 'rctiplus', tokenCredentialId: 'nJBOBpFQTq9joizgKZG7lVmw'
+    }
+  }
+}
